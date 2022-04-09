@@ -1,0 +1,8 @@
+China
+1010,189
+175,0,175
+Chinese
+Chinese Traditional Religion
+Asiatic
+Mandarin
+1

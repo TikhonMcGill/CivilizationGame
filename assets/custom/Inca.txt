@@ -1,0 +1,8 @@
+Inca
+278,494
+75,125,100
+Incan
+Inti
+Peruvian
+Quechua
+1

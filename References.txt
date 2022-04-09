@@ -1,0 +1,204 @@
+Population Unit Types:
+0 - Citizen
+1 - Slave
+2 - Tribesman
+3 - Nomad
+4 - Corpse
+
+Province Types:
+
+0: Fertile
+1: Infertile
+2: Permanently Fertile
+3: Permanently Infertile
+
+territories - pixel coords in province
+id - province id
+neighbors - neighboring provinces
+sea - seazone it's attached to, False if not coastal
+fertile - fertile pixel coords
+infertile - infertile pixel coords
+typ - type of province(see above)
+abstract_neighbors - abstract neighbor modifier for cellular automaton
+age - turns the province existed for(for reference)
+modifiers - list of modifiers
+unrest - province unrest
+buildings - farms, banks
+garrison - number of soldiers garrisoned in the province
+Stockpile - money stockpile
+foodstore - food store
+
+population_unit Variables:
+Local Global Variables:
+	population_units - all IDS of PU
+	curid - placeholder for current id
+Instance Variables:
+	stats - STR,INV,ATR
+	hp - health of PU
+	desire - desire of PU to reproduce
+	culture - culture of PU
+	religion - religion of PU
+	zeal - zeal of PU
+	ethnicity - ethnicity of PU
+	language - language of PU
+	typ - Type of PU
+	id - ID of PU
+	language_shift - % by which PU picked up official country language
+	religion_shift - % by which PU picked up official country religion
+	culture_shift - % by which PU picked up official country culture
+
+Religion Variables:
+LGVs:
+	religions - all Religions
+	curid - placeholder for current id
+Instance Variables:
+	stats - stat bonuses
+	zeal - zeal bonus
+	name - name of religion
+	id
+Culture Variables:
+LGVs:
+	cultures - all Cultures
+	curid - placeholder for current id
+Instance Variables:
+	stats - stat bonuses
+	name - name of culture
+	followers - number of PUs following culture
+	id
+Ethnicity Variables - DITTO as Cultures
+	(members - number of PUs of this ethnicity)
+Language Variables:
+LGVs: 
+	languages - all Languages
+	name - name of Ethnicity
+	curid - placeholder for current id
+Instance Variables:
+	name - Language name
+	inv - bonus to inventiveness(complexity of language)
+	atr - bonus to attractiveness(beauty of language)
+	id
+Government Class Variables:
+	LGVs:
+		governments - all governments
+		curid - placeholder for next id to generate
+	Instance Variables:
+		food - amount of food
+		money - money
+		id - id
+		culture - accepted culture
+		language - accepted language
+		religion - state religion
+		ethnicity - accepted ethnicity
+		state - type of control(Player, different AIs)
+		edict_length - how long edict lasted(needs to have lasted at least 10 turns to
+		be changed)
+		edict - the edict
+		messages - messages to government
+		focus - national focus
+		territories - territories
+		soldiers - soldiers in army
+		research - Research techs
+		discovered - discovered provinces
+		color - color of country
+		research_levels - levels of Military,Bureaucratic and Cultural technology
+		research_progress - progress of corresponding research
+		assimilation_bonus - SE
+		combat_bonus
+		teaching_bonus
+		name
+		notifications - AI only, notifications concerning what they may do next
+Province Modifiers:
+
+1. Settlement Effort
+2. Civilization Effort
+3. Enslavement Effort
+4. Liberation Effort
+5. Assimilation Effort
+6. Conversion Effort
+7. Language Teaching
+8. Ethnic Cleansing
+
+Government States:
+0 - Player
+1 - Culture-Oriented AI
+2 - Religion-Oriented AI
+3 - Conquest-Oriented AI
+4 - Scientific-Oriented AI
+
+Government Focuses:
+0 - Culture
+1 - Religion
+2 - Conquest
+3 - Science
+
+Science:
+0 - Proto-Statehood - 1000
+1 - Construction - 5000
+2 - National Focus - 50,000
+3 - Social Hierarchy - 10,000
+4 - Economy - 100,000
+5 - Bureaucracy - 500,000
+6 - Professional Army - 1,000,000
+
+Commands:
+1. build
+2. statistics PLAYERS ONLY
+3. pick focus
+4. research info PLAYERS ONLY
+5. collect taxes
+6. issue edict
+7. research
+8. draw map PLAYERS ONLY
+9. show messages PLAYERS ONLY
+10. clear messages PLAYERS ONLY
+
+Expansion Types:
+0 -  Maritime - Can easily expand via coasts
+1 -  Land - Can easily expand via land(starts with Naval Range 0), but cheaper to expand.
+
+Custom Nation Notation:
+Name of Nation
+Starting Coordinates
+Color
+Culture Name
+Religion Name
+Ethnicity Name
+Language Name
+Expansion Type
+
+
+Relation Notation:
+country1 - ID of Subject Country
+country2 - ID of Country that receives the Relation(e.g. If a Vassal-Overlord relationship, country2 would be vassal)
+points - List of Points between the countries' relationship.
+length - How long the relationship has lasted
+
+Points Notation:
+0 - Non-Aggression Pact - Country1 cannot declare war on country2
+1 - Defense Pact - If country1 is declared war on, country2 will join them. Doesn't apply if the country declares an offensive war
+2 - Offense Pact - If country1 declares war on another, country2 will join them. Doesn't apply if the country has a war declared on it(i.e. fights a defensive war)
+3 - Tribute - Country2 pays 15% of its income to Country1
+4 - Famine Relief - If one country's PUs are starving and the other country can afford it, they can send them food(doesn't necessarily go both ways)
+5 - Annexation Rights - Country1 has the right to annex Country2(Technically speaking a Vassal)
+6 - Technology Sharing - If either country has superior Bureaucratic, Cultural or Military technology, the other will instantly catch up. This DOESN'T apply to individual technologies
+7 - Levies - Country2 will give country1 10% of all their gained manpower
+8 - Vassal - Country2 acknowledges that Country1 is its overlord.
+
+War Notation:
+Side1 - List of country IDs fighting on one side, List of [Countryid,points]
+Side2 - List of country IDs fighting on other side, List of [Countryid,points]
+occupied_territories - List of Occupied territories in following notation: [Territory,Occupier,Owner]
+If a Master country capitulates, all of its Vassals will capitulate as well. 
+
+Once all the countries of one side have capitulated, the winning side will get to make demands. These demands are:
+1. Annex - The Country is given a list of provinces it can annex, but can only be annexed if the country has discovered it AND it is Adjacent OR The province is coastal AND IS OF THE SAME SEAZONE
+as the demanding country.
+2. Vassalise - The Country vassalises a chosen country. This can only be done if one of the Vassalised Territory's Provinces is Discovered by the demanding country. A Demanding country can only
+vassalise one country. Once this choice is picked, the country finishes. 
+
+All of the above demands require a certain number of "points", acquired by occupying Provinces
+and fighting winning battles. Countries that directly cause an enemy to capitulate will gain 50
+points(even if other countries previously weakened it!). Countries that win a winning fight will
+gain the square root of the difference between their and the enemy's losses. Countries that
+occupy a province will gain points equivalent to the province's number of building slots. 
+
